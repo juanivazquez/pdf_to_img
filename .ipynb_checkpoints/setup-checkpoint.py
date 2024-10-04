@@ -9,7 +9,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(    
-    name="pdf_to_img_pdf",
+    name="pdfwidgets",
     # author="Juan Ignacio Vázquez Broquá",
     # author_email="juanivazquez@gmail.com",
     # maintainer="Juan Ignacio Vázquez Broquá",
@@ -29,6 +29,7 @@ setup(
     packages=find_packages(),
     # include_package_data=True,
     install_requires=[
+        'pillow==10.4.0',
         'fitz==0.0.1.dev2',
         'pynput==1.7.7',
         'setuptools==69.2.0'

@@ -3,7 +3,7 @@ import os
 import shutil
 import time  # For introducing a delay
 
-def pdf_to_img_pdf(pdf):
+def protect_file(pdf, watermark = None):
     '''
     f(x): it takes a pdf and creates a new pdf out of images of it.
     in  : pdf file path
@@ -12,6 +12,17 @@ def pdf_to_img_pdf(pdf):
     # 1° creates folder with imgs:
     file_name = pdf_to_imgs(pdf, save=True)
     
+    if watermark is not None:
+        imglist = os.listdir('temp')  
+        imglist = [f for f in imglist if f.endswith('.png')]  # Only process PNG files
+        
+        if not imglist:
+            print("No images found in the 'temp' folder.")
+            return None
+        #time.wait(2)
+        for f in imglist:
+            file_path = f"temp/{f}"
+            add_text_watermark(file_path,file_path, "pre-print", font_scale=3)
     # 2° create files:
     new_pdf_path = imgs_to_pdf(file_name)
     
@@ -103,3 +114,50 @@ def delete_folder(folder_path):
         print(f"Folder '{folder_path}' and its contents deleted.")
     except Exception as e:
         print(f"Error deleting folder: {e}")
+
+
+
+from PIL import Image, ImageDraw, ImageFont
+
+def add_text_watermark(input_image_path, output_image_path, watermark_text, font_path=None, font_scale=5):
+    # Open the original image
+    image = Image.open(input_image_path).convert("RGBA")
+
+    # Make the image editable
+    txt = Image.new("RGBA", image.size, (255, 255, 255, 0))
+
+    # Dynamically set the font size based on the image size
+    font_size = int(min(image.size) / font_scale)  # Adjust the font_scale for larger/smaller text
+    if font_path:
+        font = ImageFont.truetype(font_path, font_size)  # Use custom font if provided
+    else:
+        # font = ImageFont.load_default()  # Default to system font
+        font = ImageFont.truetype("arial.ttf", font_size) 
+    # Initialize ImageDraw
+    draw = ImageDraw.Draw(txt)
+
+    # Get the bounding box of the text
+    text_bbox = draw.textbbox((0, 0), watermark_text, font=font)
+    text_width, text_height = text_bbox[2] - text_bbox[0], text_bbox[3] - text_bbox[1]
+
+    # Calculate the position for the watermark (centered)
+    position = ((image.size[0] - text_width) // 2, (image.size[1] - text_height) // 2)
+
+    # Add the watermark text with transparency
+    draw.text(position, watermark_text, fill=(128, 128, 128, 100), font=font)
+
+    # Rotate the watermark at a 45-degree angle
+    txt_rotated = txt.rotate(45, expand=1)
+
+    # Resize the rotated watermark back to the original image size
+    txt_resized = txt_rotated.resize(image.size)
+
+    # Combine original image with the resized watermark
+    watermarked = Image.alpha_composite(image, txt_resized)
+
+    # Save the result
+    watermarked = watermarked.convert("RGB")  # Convert back to RGB to save as jpg
+    watermarked.save(output_image_path)
+
+    # print(f"Watermark added and saved as {output_image_path}")
+

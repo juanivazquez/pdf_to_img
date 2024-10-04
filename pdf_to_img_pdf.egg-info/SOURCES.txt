@@ -1,8 +1,8 @@
 setup.py
-lib_pdf_to_img/__init__.py
-lib_pdf_to_img/utils.py
 pdf_to_img_pdf.egg-info/PKG-INFO
 pdf_to_img_pdf.egg-info/SOURCES.txt
 pdf_to_img_pdf.egg-info/dependency_links.txt
 pdf_to_img_pdf.egg-info/requires.txt
 pdf_to_img_pdf.egg-info/top_level.txt
+pdfwidgets/__init__.py
+pdfwidgets/utils.py

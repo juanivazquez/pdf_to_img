@@ -3,7 +3,7 @@ import os
 import shutil
 import time  # For introducing a delay
 
-def pdf_to_img_pdf(pdf, watermark = None):
+def protect_file(pdf, watermark = None):
     '''
     f(x): it takes a pdf and creates a new pdf out of images of it.
     in  : pdf file path
@@ -23,6 +23,8 @@ def pdf_to_img_pdf(pdf, watermark = None):
         for f in imglist:
             file_path = f"temp/{f}"
             add_text_watermark(file_path,file_path, "pre-print", font_scale=3)
+    # 2° create files:
+    new_pdf_path = imgs_to_pdf(file_name)
     
     if new_pdf_path:
         # 3° add a small delay to ensure save process completes
@@ -157,5 +159,5 @@ def add_text_watermark(input_image_path, output_image_path, watermark_text, font
     watermarked = watermarked.convert("RGB")  # Convert back to RGB to save as jpg
     watermarked.save(output_image_path)
 
-    print(f"Watermark added and saved as {output_image_path}")
+    # print(f"Watermark added and saved as {output_image_path}")
 

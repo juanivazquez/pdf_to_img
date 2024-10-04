@@ -4,8 +4,10 @@ __pycache__/
 *$py.class
 
 
-# pdf files
+# ignore files and images:
 *.pdf
+*.jpg
+*.png
 
 # C extensions
 *.so

@@ -1,0 +1,8 @@
+setup.py
+pdfwidgets/__init__.py
+pdfwidgets/utils.py
+pdfwidgets.egg-info/PKG-INFO
+pdfwidgets.egg-info/SOURCES.txt
+pdfwidgets.egg-info/dependency_links.txt
+pdfwidgets.egg-info/requires.txt
+pdfwidgets.egg-info/top_level.txt
